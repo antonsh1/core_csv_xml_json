@@ -1,4 +1,4 @@
-
+import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +11,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 
 public class ConverterTests {
     Converter converter;
@@ -40,10 +44,31 @@ public class ConverterTests {
 
         //act
         List<Employee> result = converter.parseXML(fileName, columnMapping);
+        List<Employee> emptyResult = new ArrayList<>();
 
         //assert
         Assertions.assertEquals(result, employeeList);
 
+        //используя hamcrest
+        assertThat(result, not(IsEmptyCollection.empty()));
+        //пустая коллекция вызывает ошибку
+        //assertThat(emptyResult,not(IsEmptyCollection.empty()));
+
+    }
+
+    //полностью hamcrestб различные варианты
+    @Test
+    public void MatchersParseXMLTest() throws ParserConfigurationException, IOException, SAXException {
+
+        String fileName = "src/test/resources/testdata.xml";
+
+        List<Employee> result = converter.parseXML(fileName, columnMapping);
+
+        assertThat(result.get(0), isA(Employee.class));
+        assertThat(result, notNullValue());
+        assertThat(result, anything());
+        assertThat(result, anyOf(anything(), notNullValue()));
+        assertThat(result, allOf(anything(), notNullValue()));
 
     }
 
@@ -65,8 +90,9 @@ public class ConverterTests {
         //arrange
         String fileName = "src/test/resources/testdata.csv";
         //act
-        List<Employee> result = converter.parseCSV(columnMapping,fileName);
+        List<Employee> result = converter.parseCSV(columnMapping, fileName);
         //assert
-        Assertions.assertEquals(result,employeeList);
+        Assertions.assertEquals(result, employeeList);
+
     }
 }
