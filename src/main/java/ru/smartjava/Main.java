@@ -1,13 +1,10 @@
 package ru.smartjava;
 
-import org.json.simple.parser.ParseException;
 import org.xml.sax.SAXException;
 import ru.smartjava.classes.Converter;
 import ru.smartjava.classes.Employee;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
